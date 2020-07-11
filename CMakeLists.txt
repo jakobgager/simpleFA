@@ -6,6 +6,7 @@ project(simpleFA VERSION 1.0
                       DESCRIPTION "Multimodule project")
 
 include_directories( ./lib ./src)
+add_subdirectory(FA_rulez/FA_r1)
 if (MSVC)
     # warning level 4 and all warnings as errors
     add_compile_options(/W4 /WX)

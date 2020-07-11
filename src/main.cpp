@@ -19,14 +19,11 @@ using namespace std;
 // **************************************
 int main(int argc, char* argv[])
 {
-    array<float> invev = {0, 0};
+    array<float,2> invec = {1, 1};
+    array<float,2> result = {0, 0};
     string name;
-    try {      for (const string &word : msg)
-    {
-        cout << word << " ";
-        ++i;
-    }
-    cout << endl;
+    string iniF;
+    try {
 	    TCLAP::CmdLine cmd("Command description message", ' ', "0.9");
 	    TCLAP::ValueArg<std::string> nameArg("n","name","Name to print",false,"homer","string");
 	    TCLAP::ValueArg<std::string> iniArg("","ini","Ini-File",false,"data/test.ini","string");
@@ -52,6 +49,7 @@ int main(int argc, char* argv[])
     // This return type can be int, float, double, etc or a struct or class.
 
     typedef string (*func_id)();  
+    typedef array<float,2> (*func_co)(array<float,2>);  
 
     // load the library -------------------------------------------------
     #ifdef WIN32
@@ -82,16 +80,26 @@ int main(int argc, char* argv[])
         // reset errors
         dlerror();
 
-        // load the symbols (handle to function "")
+        // load the symbols (handle to function "identify")
         func_id identify= (func_id) dlsym(lib_handle, "identify");
         const char* dlsym_error = dlerror();
         if (dlsym_error) {
             cerr << "Cannot load symbol identify: " << dlsym_error << endl;
         }
+        func_co compute = (func_co) dlsym(lib_handle, "compute");
+        if (dlsym_error) {
+            cerr << "Cannot load symbol identify: " << dlsym_error << endl;
+        }
     #endif
 
-    name = identify());
-    cout << "Hello from:\n" << name <<"\n";
+    name = identify();
+    cout << "MAIN: Hello from: " << name <<"\n";
+    result = compute(invec);
+    cout << "MAIN: Result:\n";
+    for (const float &i : result) {
+        cout << "  " << i << "\n";
+    }
+
     // unload the library -----------------------------------------------
 
     #ifdef WIN32
