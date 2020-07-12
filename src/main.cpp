@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
     // This return type can be int, float, double, etc or a struct or class.
 
     typedef string (*func_id)();  
-    typedef array<float,2> (*func_co)(array<float,2>);  
+    typedef array<float,2> (*func_co)(array<float,2> &invec);  
 
     // load the library -------------------------------------------------
     #ifdef WIN32
